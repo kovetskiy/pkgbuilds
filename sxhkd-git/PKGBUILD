@@ -29,7 +29,8 @@ package() {
     cp -r \
         "$srcdir/$pkgname/build" \
         "$pkgdir/usr"
-    cp -r \
+
+    install -DT \
         "$srcdir/$pkgname/contrib/systemd/sxhkd.service" \
         "$pkgdir/usr/lib/systemd/system/sxhkd.service"
 }
