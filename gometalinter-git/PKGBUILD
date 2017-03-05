@@ -54,7 +54,6 @@ build() {
 
     echo "Running 'gometalinter --install --update'..."
     mv "$srcdir/.go/bin/$pkgname" "$srcdir/.go/bin/gometalinter"
-    "$srcdir/.go/bin/gometalinter" --install --update
 }
 
 package() {
