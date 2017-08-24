@@ -5,6 +5,7 @@ pkgdesc="drop-in replacement for urxvt call"
 arch=('i686' 'x86_64')
 license=('GPL')
 makedepends=('go' 'git')
+depends=('tmux')
 
 source=(
 	"marvex::git://github.com/reconquest/marvex.git"
