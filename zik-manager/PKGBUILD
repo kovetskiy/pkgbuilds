@@ -1,0 +1,32 @@
+pkgname=zik-manager
+pkgver=1.3.0
+pkgrel=1
+pkgdesc="Parrot Zik Headphones remote manager"
+arch=('x86_64')
+license=('custom')
+makedepends=()
+
+url="http://whisky-in-the.glass/?page_id=13"
+
+source=(
+    "zik-manager-linux-x64-${pkgver}-${pkgrel}.tar.bz2::http://whisky-in-the.glass/?wpdmdl=8"
+    "bin-zik-manager"
+
+)
+md5sums=(
+    "3193623c4b50ca982dcf60e451c3b6c0"
+    "abb676c4ded4f63836ce9a653dedcf9d"
+)
+
+backup=()
+
+build() {
+    rm "${srcdir}/zik-manager/zik-manager.sh"
+}
+
+package() {
+    mkdir -p "${pkgdir}/usr/bin/" "${pkgdir}/usr/lib/"
+
+    cp -r "${srcdir}/zik-manager/" "${pkgdir}/usr/lib/"
+    cp -r "${srcdir}/bin-zik-manager" "${pkgdir}/usr/bin/zik-manager"
+}
