@@ -1,4 +1,4 @@
-pkgname=upwork
+pkgname=upwork-latest
 pkgver=5.1.0.509
 _rawver=${pkgver//./_}
 _hashver="87zq7fllb6sf8y49"
