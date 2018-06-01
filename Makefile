@@ -13,7 +13,7 @@ $(PROJECTS):
 	mksrcinfo
 	ls -lah
 	grep -P '(pkgver|pkgrel)=' PKGBUILD
-	git add $${FILES} .SRCINFO
+	git add .
 	git diff
 	git status
 	echo -n "Proceed? [Y/n]: "
