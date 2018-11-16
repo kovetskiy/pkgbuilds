@@ -38,27 +38,15 @@ pkgver() {
 }
 
 build() {
-	cd "$srcdir/$_pkgname"
+	mkdir -p "$srcdir/go/src/github.com/reconquest/"
+    rm -rf "$srcdir/go/src/"
+	mv "$srcdir/$_pkgname" "$srcdir/go/src/github.com/reconquest/"
 
-	if [ -L "$srcdir/$_pkgname" ]; then
-		rm "$srcdir/$_pkgname" -rf
-		mv "$srcdir/go/src/$_pkgname/" "$srcdir/$_pkgname"
-	fi
-
-	rm -rf "$srcdir/go/src"
-
-	mkdir -p "$srcdir/go/src"
-
-	export GOPATH="$srcdir/go"
-
-	mv "$srcdir/$_pkgname" "$srcdir/go/src/"
-
-	cd "$srcdir/go/src/$_pkgname/"
-	ln -sf "$srcdir/go/src/$_pkgname/" "$srcdir/$_pkgname"
-
+    cd "$srcdir/go/src/github.com/reconquest/journey"
 	echo ":: Updating git submodules"
 	git submodule update --init
 
+	export GOPATH="$srcdir/go"
 	echo ":: Building binary"
 	go get -v \
 		-gcflags "-trimpath $GOPATH/src"
