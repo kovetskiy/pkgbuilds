@@ -38,11 +38,14 @@ pkgver() {
 }
 
 build() {
-	mkdir -p "$srcdir/go/src/github.com/reconquest/"
-    rm -rf "$srcdir/go/src/"
-	mv "$srcdir/$_pkgname" "$srcdir/go/src/github.com/reconquest/"
+    _importpath="github.com/reconquest/journey"
 
-    cd "$srcdir/go/src/github.com/reconquest/journey"
+    rm -rf "$srcdir/go/src/"
+    mkdir -p "$srcdir/go/src/$(dirname $_importpath)"
+	mv "$srcdir/$_pkgname" "$srcdir/go/src/$_importpath"
+
+    cd "$srcdir/go/src/$_importpath"
+
 	echo ":: Updating git submodules"
 	git submodule update --init
 
