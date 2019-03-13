@@ -59,7 +59,7 @@ build() {
 }
 
 package() {
-	find "$srcdir/go/bin/" -type f -executable | while read filename; do
+	find "$srcdir/go/src/$_pkgname/" -maxdepth 1 -type f -executable | while read filename; do
 		install -DT "$filename" "$pkgdir/usr/bin/$(basename $filename)"
 	done
 }
