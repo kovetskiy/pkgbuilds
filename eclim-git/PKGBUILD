@@ -26,7 +26,7 @@ source=("${pkgname}::git+https://github.com/ervandew/eclim.git"
         fix_stubutility.patch)
 
 sha256sums=('SKIP'
-            'cf6a7fa27097d53891e5cf78bfd97acb86670aa3ddc16c01c13eecdf012dd32e'
+            '76b26b38d4ebd651942e34243b66779c24daa1d6498f2906190d1a7be59bafbe'
             '8047c80fe68b546a38701b80fe6c69056dd56e5a950db41da0f7597d9eaf56d5')
 
 pkgver() {
@@ -141,7 +141,4 @@ package() {
   rm ${pkgdir}/usr/lib/eclipse/plugins/org.eclim_*/nailgun/config.status
 
   install -D -m 644 ${srcdir}/systemd_eclimd.service ${pkgdir}/usr/lib/systemd/user/eclimd.service
-
-  sed "s|/usr/share/eclipse/|/usr/lib/eclipse/|g" \
-      -i ${pkgdir}/usr/lib/systemd/user/eclimd.service
 }
