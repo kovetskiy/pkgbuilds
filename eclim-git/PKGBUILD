@@ -39,12 +39,12 @@ prepare() {
   # fix build, thanks to mikezackles
   sed -e "s/'sphinx-build'/'sphinx-build2'/g" \
     -e 's|${user.home}/\.|${vim.files}/|g' \
-    -e "s|File(getVariable('eclipse')|File('/usr/share/eclipse/'|g" \
+    -e "s|File(getVariable('eclipse')|File('/usr/lib/eclipse/'|g" \
     -i ant/build.gant
 }
 
 getEclipseUserHome() {
-  prod_file='/usr/share/eclipse/.eclipseproduct'
+  prod_file='/usr/lib/eclipse/.eclipseproduct'
   if [ -r ${prod_file} ]; then
     _eclipse_ver=$(cat ${prod_file} \
       | grep 'version=' \
@@ -81,7 +81,7 @@ build() {
   _build_dir=${srcdir}/build
   mkdir -p ${_build_dir}
 
-  ant -Declipse.home=/usr/share/eclipse \
+  ant -Declipse.home=/usr/lib/eclipse \
       ${_ant_opts_eclipse_user_home} \
       -Declipse.dest=${_build_dir} \
       clean \
@@ -93,7 +93,7 @@ package() {
 
   _build_dir=${srcdir}/build
 
-  ant -Declipse.home=/usr/share/eclipse \
+  ant -Declipse.home=/usr/lib/eclipse \
       ${_ant_opts_eclipse_user_home} \
       -Declipse.dest=${_build_dir} \
       docs
@@ -102,33 +102,33 @@ package() {
   cp -r build/doc/site ${pkgdir}/usr/share/doc/eclim
 
   mkdir -p ${pkgdir}/usr/share/vim/vimfiles/eclim/doc
-  ant -Declipse.home=/usr/share/eclipse \
+  ant -Declipse.home=/usr/lib/eclipse \
       ${_ant_opts_eclipse_user_home} \
       -Dvim.files=${pkgdir}/usr/share/vim/vimfiles \
       -Declipse.dest=${_build_dir} \
       vimdocs
 
-  mkdir -p ${pkgdir}/usr/share/eclipse
+  mkdir -p ${pkgdir}/usr/lib/eclipse
   mkdir -p ${pkgdir}/usr/share/vim/vimfiles
-  ant -Declipse.home=${pkgdir}/usr/share/eclipse \
-      -Declipse.dest=${pkgdir}/usr/share/eclipse \
+  ant -Declipse.home=${pkgdir}/usr/lib/eclipse \
+      -Declipse.dest=${pkgdir}/usr/lib/eclipse \
       -Dvim.files=${pkgdir}/usr/share/vim/vimfiles \
       deploy
 
   # fix eclim paths
   sed -e "s|${pkgdir}||g" \
-    -i ${pkgdir}/usr/share/eclipse/plugins/org.eclim_*/bin/eclimd \
-    -i ${pkgdir}/usr/share/eclipse/plugins/org.eclim_*/plugin.properties
+    -i ${pkgdir}/usr/lib/eclipse/plugins/org.eclim_*/bin/eclimd \
+    -i ${pkgdir}/usr/lib/eclipse/plugins/org.eclim_*/plugin.properties
 
   mkdir ${pkgdir}/usr/bin
   for s in eclim eclimd; do
-    ln -s /usr/share/eclipse/${s} ${pkgdir}/usr/bin/${s}
+    ln -s /usr/lib/eclipse/${s} ${pkgdir}/usr/bin/${s}
   done
 
   # delete doctrees
   rm -fr ${pkgdir}/usr/share/doc/eclim/.doctrees
 
-  rm ${pkgdir}/usr/share/eclipse/plugins/org.eclim_*/nailgun/config.status
+  rm ${pkgdir}/usr/lib/eclipse/plugins/org.eclim_*/nailgun/config.status
 
   install -D -m 644 ${srcdir}/systemd_eclimd.service ${pkgdir}/usr/lib/systemd/user/eclimd.service
 }
