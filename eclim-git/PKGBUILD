@@ -61,6 +61,7 @@ getEclipseUserHome() {
     return
   fi
 }
+
 _eclipse_user_home=$(getEclipseUserHome)
 _ant_opts_eclipse_user_home=''
 if [ "x${_eclipse_user_home}" != "x" ]; then
@@ -140,4 +141,7 @@ package() {
   rm ${pkgdir}/usr/lib/eclipse/plugins/org.eclim_*/nailgun/config.status
 
   install -D -m 644 ${srcdir}/systemd_eclimd.service ${pkgdir}/usr/lib/systemd/user/eclimd.service
+
+  sed "s|/usr/share/eclipse/|/usr/lib/eclipse/|g" \
+      -i ${pkgdir}/usr/lib/systemd/user/eclimd.service
 }
