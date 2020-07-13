@@ -6,10 +6,10 @@ PROJECTS = $(shell find -maxdepth 1 -type d)
 $(PROJECTS):
 	export WORKDIR=$$(mktemp --dry-run --directory --suffix .pkgbuild.${@})
 	git clone ssh://aur@aur.archlinux.org/${@}.git $$WORKDIR
+	git checkout master || true
 	FILES=$$(git ls-files $@)
 	cp -r $$FILES $$WORKDIR/
-	COMMIT=$$(git log --pretty=format:'%s' | grep "${@}:" | head -n 1)
-	COMMIT=$${COMMIT:-"sync github.com/kovetskiy/pkgbuilds"}
+	COMMIT="sync github.com/kovetskiy/pkgbuilds"
 	cd $$WORKDIR
 	mksrcinfo
 	ls -lah
