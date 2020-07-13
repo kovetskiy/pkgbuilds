@@ -4,7 +4,7 @@ _rawver=${pkgver//./_}
 _hashver="87zq7fllb6sf8y49"
 pkgrel=1
 pkgdesc="Desktop App (aka Team App) Standard Latest version"
-arch=('x86_64')
+arch=('any')
 url="https://www.upwork.com/downloads?source=Footer"
 license=('custom')
 conflicts=('upwork' 'upwork-alpha' 'upwork-appimage' 'upwork-beta')

@@ -4,7 +4,7 @@ _pkgname=monk
 pkgver=20180921.19_66cd6ca
 pkgrel=1
 pkgdesc="experimental tool for local network"
-arch=('i686' 'x86_64')
+arch=('any')
 license=('GPL')
 depends=(
 )

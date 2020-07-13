@@ -3,7 +3,7 @@ pkgname=dard-git
 pkgver=20180601.1_8d5ec8e
 pkgrel=1
 pkgdesc="simple http file storage daemon"
-arch=('i686' 'x86_64')
+arch=('any')
 license=('GPL')
 depends=(
 )

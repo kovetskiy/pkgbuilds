@@ -4,7 +4,7 @@ _pkgname=spotbugs
 pkgver=4.0.3
 pkgrel=1
 pkgdesc="SpotBugs is FindBugs' successor. A tool for static analysis to look for bugs in Java code."
-arch=('i686' 'x86_64')
+arch=('any')
 license=('GPL')
 depends=(
 )
