@@ -1,4 +1,0 @@
-#!/bin/sh
-
-export LD_LIBRARY_PATH=/usr/lib/zik-manager/
-exec /usr/lib/zik-manager/zik-manager "${@}"
