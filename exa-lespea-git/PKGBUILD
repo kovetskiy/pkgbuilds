@@ -1,0 +1,29 @@
+pkgname=exa-lespea-git
+pkgver=0.9.0
+pkgrel=1
+pkgdesc="exa is a replacement for ls written in Rust."
+arch=('any')
+url="https://github.com/lespea/exa"
+license=('GPL')
+depends=()
+makedepends=(rustup)
+source=(exa::git+ssh://git@github.com/lespea/exa)
+md5sums=('SKIP')
+
+pkgver() {
+    cd "$srcdir/exa"
+    local date=$(git log -1 --format="%cd" --date=short | sed s/-//g)
+    local count=$(git rev-list --count HEAD)
+    local commit=$(git rev-parse --short HEAD)
+    echo "$date.${count}_$commit"
+}
+
+build() {
+  cd "$srcdir/exa"
+  make
+}
+
+package() {
+  cd "$srcdir/exa"
+  make install PREFIX=$pkgdir
+}
