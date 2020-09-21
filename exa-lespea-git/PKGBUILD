@@ -7,7 +7,7 @@ url="https://github.com/lespea/exa"
 license=('GPL')
 depends=()
 makedepends=(rustup)
-source=(exa::git+ssh://git@github.com/lespea/exa)
+source=(exa::git+https://github.com/lespea/exa)
 md5sums=('SKIP')
 
 pkgver() {
