@@ -4,24 +4,9 @@ PROJECTS = $(shell find -maxdepth 1 -type d)
 .ONESHELL:
 .SILENT:
 $(PROJECTS):
-	export WORKDIR=$$(mktemp --dry-run --directory --suffix .pkgbuild.${@})
-	git clone ssh://aur@aur.archlinux.org/${@}.git $$WORKDIR
-	git checkout master || true
-	FILES=$$(git ls-files $@)
-	cp -r $$FILES $$WORKDIR/
-	COMMIT="sync github.com/kovetskiy/pkgbuilds"
-	cd $$WORKDIR
-	mksrcinfo
-	ls -lah
-	grep -P '(pkgver|pkgrel)=' PKGBUILD
-	git add .
-	git diff
-	git status
-	echo -n "Proceed? [Y/n]: "
-	read proceed
-	[[ "$$proceed" != "n" ]] || exit
-	git commit -m "$$COMMIT"
-	git push origin master
+	@cd $@
+	@echo :: Building $@
+	@makepkg -f -s -i
 
 clean:
 	@git clean -fX
