@@ -2,7 +2,7 @@ pkgname=palantir-java-format-git
 _pkgname=palantir-java-format
 provides=($_pkgname)
 conflicts=($_pkgname)
-pkgver=1.0.1.21.g8dff705.patch
+pkgver=1.0.1.21.ge58f6fe.patch
 pkgrel=1
 pkgdesc="Reformats Java source code to comply with Palantir Java Style"
 arch=('any')
@@ -10,19 +10,17 @@ url="https://github.com/palantir/palantir-java-format"
 depends=('java-runtime' 'google-java-format')
 options=()
 source=("$pkgname::git+https://github.com/palantir/palantir-java-format"
-        "gradle.patch"
+        "0001-include-dependencies-in-jar.patch"
         "palantir-java-format")
 md5sums=('SKIP'
-         'c10adb0c847e73c5226ef63740fee216'
+         '0a56446f381de2d731b16186631ea50a'
          '86828c1f441b9c1a97674d7d3d035625')
 makedepends=('git' 'awk' 'gradle')
 depends=('java-runtime')
 
 prepare() {
   cd "$srcdir/${pkgname}"
-  patch -p1 < "$srcdir/gradle.patch"
-  git add .
-  git commit -m "patch jar task"
+  git am < $srcdir/0001-include-dependencies-in-jar.patch
 }
 
 pkgver() {

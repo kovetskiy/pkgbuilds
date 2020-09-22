@@ -1,0 +1,27 @@
+From b3fb7bd772b4786e0c1efb9dbc2b1f8ff98322a0 Mon Sep 17 00:00:00 2001
+From: Egor Kovetskiy <e.kovetskiy@gmail.com>
+Date: Tue, 22 Sep 2020 09:42:07 +0300
+Subject: [PATCH] include dependencies in jar
+
+---
+ gradle/publish-jar.gradle | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/gradle/publish-jar.gradle b/gradle/publish-jar.gradle
+index 1e017db..d9f99e4 100644
+--- a/gradle/publish-jar.gradle
++++ b/gradle/publish-jar.gradle
+@@ -17,6 +17,10 @@ jar {
+     manifest {
+         attributes("Implementation-Version" : project.version)
+     }
++
++  from {
++    configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
++  }
+ }
+ 
+ bintray {
+-- 
+2.28.0
+
