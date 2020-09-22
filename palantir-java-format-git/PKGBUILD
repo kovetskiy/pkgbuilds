@@ -2,7 +2,7 @@ pkgname=palantir-java-format-git
 _pkgname=palantir-java-format
 provides=($_pkgname)
 conflicts=($_pkgname)
-pkgver=1.0.1.21.ge58f6fe.patch
+pkgver=1.0.1.21.g8dff705.patch
 pkgrel=1
 pkgdesc="Reformats Java source code to comply with Palantir Java Style"
 arch=('any')
@@ -20,6 +20,8 @@ depends=('java-runtime')
 
 prepare() {
   cd "$srcdir/${pkgname}"
+  git config user.email "nobody@makepkg"
+  git config user.name "makepkg"
   git am < $srcdir/0001-include-dependencies-in-jar.patch
 }
 
