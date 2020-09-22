@@ -66,5 +66,6 @@ build() {
 }
 
 package() {
+    mkdir -p "$pkgdir/usr/bin/"
     cp "$srcdir/go/bin/aurora" "$pkgdir/usr/bin/aurora"
 }
