@@ -1,0 +1,21 @@
+commit 897e91619e906f137ba1b6129d067b6f0bfe88d2
+Author: Egor Kovetskiy <e.kovetskiy@gmail.com>
+Date:   Thu Jul 23 13:02:09 2020 +0300
+
+    include dependencies
+
+diff --git a/gradle/publish-jar.gradle b/gradle/publish-jar.gradle
+index 1e017db..d9f99e4 100644
+--- a/gradle/publish-jar.gradle
++++ b/gradle/publish-jar.gradle
+@@ -17,6 +17,10 @@ jar {
+     manifest {
+         attributes("Implementation-Version" : project.version)
+     }
++
++  from {
++    configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
++  }
+ }
+ 
+ bintray {

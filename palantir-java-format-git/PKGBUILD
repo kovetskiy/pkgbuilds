@@ -1,0 +1,56 @@
+pkgname=palantir-java-format-git
+_pkgname=palantir-java-format
+provides=($_pkgname)
+conflicts=($_pkgname)
+pkgver=1.0.1.21.g8dff705.patch
+pkgrel=1
+pkgdesc="Reformats Java source code to comply with Palantir Java Style"
+arch=('any')
+url="https://github.com/palantir/palantir-java-format"
+depends=('java-runtime' 'google-java-format')
+options=()
+source=("$pkgname::git+https://github.com/palantir/palantir-java-format"
+        "gradle.patch"
+        "palantir-java-format")
+md5sums=('SKIP'
+         'c10adb0c847e73c5226ef63740fee216'
+         '86828c1f441b9c1a97674d7d3d035625')
+makedepends=('git' 'awk' 'gradle')
+depends=('java-runtime')
+
+prepare() {
+  cd "$srcdir/${pkgname}"
+  patch -p1 < "$srcdir/gradle.patch"
+  git add .
+  git commit -m "patch jar task"
+}
+
+pkgver() {
+  cd "$srcdir/${pkgname}"
+
+  echo $(git describe --tags --abbrev=7 | sed 's/-/./g').patch
+}
+
+build() {
+  cd "$srcdir/${pkgname}"
+
+
+  for dir in ${_pkgname}-spi $_pkgname ; do
+    pushd $dir
+    gradle jar --no-daemon --console=plain
+    popd
+  done
+}
+
+package() {
+  v=$(git -C $srcdir/$pkgname/ describe --tags --abbrev=7)
+
+  mkdir -p "$pkgdir/usr/share/java/$_pkgname/"
+  cp "$srcdir/$pkgname/$_pkgname/build/libs/$_pkgname-$v.jar" "$pkgdir/usr/share/java/$_pkgname/$_pkgname.jar"
+  cp "$srcdir/$pkgname/${_pkgname}-spi/build/libs/${_pkgname}-spi-$v.jar" "$pkgdir/usr/share/java/$_pkgname/${_pkgname}-spi.jar"
+
+  mkdir -p "$pkgdir/usr/bin/"
+  cp "$srcdir/$_pkgname" "$pkgdir/usr/bin/"
+}
+
+# vim:set ts=2 sw=2 et:
