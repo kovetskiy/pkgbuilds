@@ -1,0 +1,17 @@
+# Maintainer: Egor Kovetskiy <e.kovetskiy@gmail.com>
+pkgname=docker-pandoc
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="pandoc in docker"
+arch=('any')
+license=('GPL')
+depends=('docker')
+md5sums=('3334b55873ef7b35248d4e210a92d793')
+source=("pandoc")
+provides=(pandoc)
+
+package() {
+    install -DT \
+        "$srcdir/pandoc" \
+        "$pkgdir/usr/bin/pandoc"
+}
