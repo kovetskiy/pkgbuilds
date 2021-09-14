@@ -1,0 +1,41 @@
+From b98bb8d5d3375fb95effe520049a4ef0437ad0d4 Mon Sep 17 00:00:00 2001
+From: Egor Kovetskiy <e.kovetskiy@gmail.com>
+Date: Wed, 15 Sep 2021 01:28:10 +0300
+Subject: [PATCH] collect all required dependencies
+
+---
+ palantir-java-format-spi/build.gradle | 6 ++++++
+ palantir-java-format/build.gradle     | 6 ++++++
+ 2 files changed, 12 insertions(+)
+
+diff --git a/palantir-java-format-spi/build.gradle b/palantir-java-format-spi/build.gradle
+index b0da032..85b803a 100644
+--- a/palantir-java-format-spi/build.gradle
++++ b/palantir-java-format-spi/build.gradle
+@@ -5,3 +5,9 @@ apply plugin: 'com.palantir.revapi'
+ dependencies {
+     api 'com.google.guava:guava'
+ }
++
++tasks.withType(Jar) {
++    from {
++        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
++    }
++}
+diff --git a/palantir-java-format/build.gradle b/palantir-java-format/build.gradle
+index e7f7856..1427153 100644
+--- a/palantir-java-format/build.gradle
++++ b/palantir-java-format/build.gradle
+@@ -70,3 +70,9 @@ tasks.test {
+ idea {
+     module.languageLevel = new org.gradle.plugins.ide.idea.model.IdeaLanguageLevel(14)
+ }
++
++tasks.withType(Jar) {
++    from {
++        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
++    }
++}
+-- 
+2.33.0
+

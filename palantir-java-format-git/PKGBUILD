@@ -2,7 +2,7 @@ pkgname=palantir-java-format-git
 _pkgname=palantir-java-format
 provides=($_pkgname)
 conflicts=($_pkgname)
-pkgver=1.0.1.21.g8dff705.patch
+pkgver=2.2.0.33.gcc0de91.patch
 pkgrel=1
 pkgdesc="Reformats Java source code to comply with Palantir Java Style"
 arch=('any')
@@ -10,20 +10,14 @@ url="https://github.com/palantir/palantir-java-format"
 depends=('java-runtime' 'google-java-format')
 options=()
 source=("$pkgname::git+https://github.com/palantir/palantir-java-format"
-        "0001-include-dependencies-in-jar.patch"
+        "0002-collect-all-required-dependencies.patch"
         "palantir-java-format")
+
 md5sums=('SKIP'
-         '0a56446f381de2d731b16186631ea50a'
+         'abbdb821c911d9ca4b8628d2221d4ffd'
          '86828c1f441b9c1a97674d7d3d035625')
 makedepends=('git' 'awk' 'gradle')
 depends=('java-runtime')
-
-prepare() {
-  cd "$srcdir/${pkgname}"
-  git config user.email "nobody@makepkg"
-  git config user.name "makepkg"
-  git am < $srcdir/0001-include-dependencies-in-jar.patch
-}
 
 pkgver() {
   cd "$srcdir/${pkgname}"
@@ -34,10 +28,13 @@ pkgver() {
 build() {
   cd "$srcdir/${pkgname}"
 
+  git config user.email "nobody@makepkg"
+  git config user.name "makepkg"
+  git am < "$srcdir/0002-collect-all-required-dependencies.patch"
 
   for dir in ${_pkgname}-spi $_pkgname ; do
     pushd $dir
-    gradle jar --no-daemon --console=plain
+    ../gradlew jar --no-daemon --console=plain --info
     popd
   done
 }
