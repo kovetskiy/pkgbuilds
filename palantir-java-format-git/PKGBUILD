@@ -15,7 +15,7 @@ source=("$pkgname::git+https://github.com/palantir/palantir-java-format"
 
 md5sums=('SKIP'
          'abbdb821c911d9ca4b8628d2221d4ffd'
-         '86828c1f441b9c1a97674d7d3d035625')
+         '967c991dd047f647d680b93e3e253102')
 makedepends=('git' 'awk' 'gradle')
 depends=('java-runtime')
 

@@ -1,4 +1,4 @@
 #!/bin/sh
-exec /usr/bin/java  \
+exec /usr/lib/jvm/java-11-openjdk/bin/java  \
     -cp /usr/share/java/palantir-java-format/palantir-java-format.jar:/usr/share/java/palantir-java-format/palantir-java-format-spi.jar:/usr/share/java/google-java-format/google-java-format.jar \
     com.palantir.javaformat.java.Main "${@}"
