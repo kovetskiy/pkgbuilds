@@ -1,0 +1,25 @@
+pkgname=tonkeeper-bin
+pkgver=3.16.0
+pkgrel=1
+pkgdesc="Tonkeeper - a secure wallet for managing blockchain assets"
+arch=('x86_64' 'aarch64')
+url="https://github.com/tonkeeper/tonkeeper-web/releases"
+license=('custom')
+
+_github_repo="tonkeeper/tonkeeper-web"
+
+source_x86_64=("tonkeeper-${pkgver}-x86_64.rpm::https://github.com/${_github_repo}/releases/download/v${pkgver}/Tonkeeper-${pkgver}-1.x86_64.rpm")
+source_aarch64=("tonkeeper-${pkgver}-aarch64.rpm::https://github.com/${_github_repo}/releases/download/v${pkgver}/Tonkeeper-${pkgver}-1.arm64.rpm")
+sha256sums_x86_64=('SKIP')
+sha256sums_aarch64=('SKIP')
+
+pkgver() {
+  _latest_tag=$(curl -s "https://api.github.com/repos/${_github_repo}/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+  echo "${_latest_tag//v}"
+}
+
+package() {
+  bsdtar -xvf "$srcdir/tonkeeper-${pkgver}-${CARCH}.rpm" -C "$pkgdir"
+  mv "$pkgdir/usr/bin/Tonkeeper" "$pkgdir/usr/bin/tonkeeper"
+  rm -rf "$pkgdir/usr/lib/.build-id"
+}

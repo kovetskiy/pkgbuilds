@@ -1,7 +1,7 @@
 # Maintainer: Egor Kovetskiy <e.kovetskiy@gmail.com>
 pkgname=taskfile-git
 _pkgname=task
-pkgver=2.8.1.r7.g7dcb3af
+pkgver=3.18.0.r9.gf2afa77
 pkgrel=1
 pkgdesc="A task runner / simpler Make alternative written in Go"
 arch=('any')
@@ -44,14 +44,12 @@ build() {
     cd "$srcdir/go/src/$_goname/"
 
     echo ":: Building binary"
-    go get -v \
+    go install -v \
         -gcflags "-trimpath $GOPATH/src" ./cmd/...
 }
 
 package() {
-    find "$srcdir/go/bin/" -type f -executable | while read filename; do
-        install -DT "$filename" "$pkgdir/usr/bin/$(basename $filename)"
-    done
+    install -DT "$srcdir/go/bin/task" "$pkgdir/usr/bin/task"
 
     install -DT "$srcdir/$_pkgname/completion/zsh/_task" \
         "$pkgdir/usr/share/zsh/site-functions/_task"
