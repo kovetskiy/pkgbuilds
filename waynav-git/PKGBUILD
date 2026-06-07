@@ -1,0 +1,96 @@
+# Maintainer: Egor Kovetskiy <e.kovetskiy@gmail.com>
+pkgname=waynav-git
+_pkgname=waynav
+pkgver=1.0.1
+pkgrel=1
+pkgdesc="Wayland-native keynav replacement for wlroots compositors"
+arch=('x86_64' 'aarch64')
+url="https://github.com/kovetskiy/waynav"
+license=('MIT')
+depends=(
+    'cairo'
+    'glibc'
+    'libxkbcommon'
+    'wayland'
+)
+makedepends=(
+    'git'
+    'meson'
+    'pkgconf'
+    'wayland-protocols'
+)
+provides=("$_pkgname")
+conflicts=("$_pkgname")
+source=(
+    "$_pkgname::git+https://github.com/kovetskiy/waynav#branch=${BRANCH:-main}"
+)
+sha256sums=(
+    'SKIP'
+)
+
+_latest_release_tag() {
+    git tag --sort=-v:refname | grep -E '^[v]?[0-9]' | head -n 1
+}
+
+_release_tag() {
+    local version=$1
+
+    if [[ ! "$version" ]]; then
+        _latest_release_tag
+        return
+    fi
+
+    if git rev-parse -q --verify "refs/tags/$version" >/dev/null; then
+        echo "$version"
+        return
+    fi
+
+    if git rev-parse -q --verify "refs/tags/v$version" >/dev/null; then
+        echo "v$version"
+        return
+    fi
+
+    return 1
+}
+
+pkgver() {
+    if [[ "$PKGVER" ]]; then
+        echo "$PKGVER"
+        return
+    fi
+
+    cd "$srcdir/$_pkgname"
+    git describe --tags --exact-match 2>/dev/null | sed 's/^v//'
+}
+
+prepare() {
+    cd "$srcdir/$_pkgname"
+
+    local tag
+    tag=$(_release_tag "$PKGVER") || {
+        echo "Unable to find release tag for ${PKGVER:-latest release}" >&2
+        exit 1
+    }
+
+    git checkout -q "$tag"
+}
+
+build() {
+    arch-meson "$_pkgname" build \
+        -Dbuild_version="$pkgver-$pkgrel"
+
+    meson compile -C build
+}
+
+check() {
+    meson test -C build --print-errorlogs
+}
+
+package() {
+    meson install -C build --destdir "$pkgdir"
+
+    install -Dm644 "$_pkgname/LICENSE" \
+        "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+    install -Dm644 "$_pkgname/README.md" \
+        "$pkgdir/usr/share/doc/$pkgname/README.md"
+}
